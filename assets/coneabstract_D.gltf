@@ -1,0 +1,153 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v3.3.32",
+        "version" : "2.0"
+    },
+    "extensionsUsed" : [
+        "KHR_materials_specular",
+        "KHR_materials_ior"
+    ],
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "Cylinder.001",
+            "rotation" : [
+                0.6681349873542786,
+                -0.3193370997905731,
+                0.5469558835029602,
+                0.39045965671539307
+            ],
+            "scale" : [
+                0.14553453028202057,
+                0.06137000396847725,
+                0.07918718457221985
+            ],
+            "translation" : [
+                0.629395604133606,
+                -1.1510111093521118,
+                12.258282661437988
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "extensions" : {
+                "KHR_materials_specular" : {
+                    "specularColorFactor" : [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "KHR_materials_ior" : {
+                    "ior" : 1.4500000476837158
+                }
+            },
+            "name" : "trippyyy",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.3386363685131073
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Cylinder.005",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1,
+                        "TEXCOORD_0" : 2
+                    },
+                    "indices" : 3,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 323140,
+            "max" : [
+                7.387977600097656,
+                5.244270324707031,
+                6.7802863121032715
+            ],
+            "min" : [
+                -2.264585256576538,
+                -3.2190029621124268,
+                -6.521348476409912
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 323140,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 323140,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5125,
+            "count" : 326364,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 3877680,
+            "byteOffset" : 0,
+            "target" : 34962
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3877680,
+            "byteOffset" : 3877680,
+            "target" : 34962
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 2585120,
+            "byteOffset" : 7755360,
+            "target" : 34962
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 1305456,
+            "byteOffset" : 10340480,
+            "target" : 34963
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 11645936,
+            "uri" : "coneabstract_D.bin"
+        }
+    ]
+}

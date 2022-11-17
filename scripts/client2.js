@@ -11,8 +11,15 @@ import {
 } from "../src/PointerLockControls.js";
 
 import {
-  FontLoader
-} from "../src/FontLoader.js"
+  GLTFLoader
+} from "../src/GLTFLoader.js";
+
+import {  FontLoader } from "../src/FontLoader.js"
+
+import {
+  Water
+} from "../src/Water.js";
+
 
 
 // Establish variables
@@ -147,179 +154,275 @@ function init() {
     0,
     10
   );
+  //
+  // // Generate the ground
+  // let floorGeometry = new THREE.PlaneGeometry(2000, 2000, 100, 100);
+  // floorGeometry.rotateX(-Math.PI / 2);
+  //
+  // // Vertex displacement pattern for ground
+  // let position = floorGeometry.attributes.position;
+  //
+  // for (let i = 0, l = position.count; i < l; i++) {
+  //   vertex.fromBufferAttribute(position, i);
+  //
+  //   vertex.x += Math.random() * 20 - 10;
+  //   vertex.y += Math.random() * 2;
+  //   vertex.z += Math.random() * 20 - 10;
+  //
+  //   position.setXYZ(i, vertex.x, vertex.y, vertex.z);
+  // }
+  //
+  // floorGeometry = floorGeometry.toNonIndexed(); // ensure each face has unique vertices
+  //
+  // position = floorGeometry.attributes.position;
+  // const colorsFloor = [];
+  //
+  // for (let i = 0, l = position.count; i < l; i++) {
+  //   color.setHSL(Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75);
+  //   colorsFloor.push(color.r, color.g, color.b);
+  // }
+  //
+  // floorGeometry.setAttribute(
+  //   "color",
+  //   new THREE.Float32BufferAttribute(colorsFloor, 3)
+  // );
+  //
+  // const floorMaterial = new THREE.MeshBasicMaterial({
+  //   vertexColors: true
+  // });
+  //
+  // const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  //
+  // // Insert completed floor into the scene
+  // scene.add(floor);
 
-  // Generate the ground
-  let floorGeometry = new THREE.PlaneGeometry(2000, 2000, 100, 100);
-  floorGeometry.rotateX(-Math.PI / 2);
+  const waterGeometry = new THREE.PlaneGeometry( 10000, 10000 );
 
-  // Vertex displacement pattern for ground
-  let position = floorGeometry.attributes.position;
+  				water = new Water(
+  					waterGeometry,
+  					{
+  						textureWidth: 512,
+  						textureHeight: 512,
+  						waterNormals: new THREE.TextureLoader().load( 'textures/waternormals.jpg', function ( texture ) {
 
-  for (let i = 0, l = position.count; i < l; i++) {
-    vertex.fromBufferAttribute(position, i);
+  							texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
-    vertex.x += Math.random() * 20 - 10;
-    vertex.y += Math.random() * 2;
-    vertex.z += Math.random() * 20 - 10;
+  						} ),
+  						sunDirection: new THREE.Vector3(),
+  						sunColor: 0xffffff,
+  						waterColor: 0x001e0f,
+  						distortionScale: 3.7,
+  						fog: scene.fog !== undefined
+  					}
+  				);
 
-    position.setXYZ(i, vertex.x, vertex.y, vertex.z);
-  }
+  				water.rotation.x = - Math.PI / 2;
 
-  floorGeometry = floorGeometry.toNonIndexed(); // ensure each face has unique vertices
+  				scene.add( water );
 
-  position = floorGeometry.attributes.position;
-  const colorsFloor = [];
-
-  for (let i = 0, l = position.count; i < l; i++) {
-    color.setHSL(Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75);
-    colorsFloor.push(color.r, color.g, color.b);
-  }
-
-  floorGeometry.setAttribute(
-    "color",
-    new THREE.Float32BufferAttribute(colorsFloor, 3)
-  );
-
-  const floorMaterial = new THREE.MeshBasicMaterial({
-    vertexColors: true
-  });
-
-  const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-
-  // Insert completed floor into the scene
-  scene.add(floor);
 
 
   // First Image (red and purple glitch map)
   // Load image as texture
-  const texture = new THREE.TextureLoader().load( '../../assets/glitch_map.jpg' );
+  const texture = new THREE.TextureLoader().load('../../assets/glitch_map.jpg');
   // Immediately use the texture for material creation
-  const material = new THREE.MeshBasicMaterial( { map: texture, side: THREE.DoubleSide } );
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    side: THREE.DoubleSide
+  });
   // Create plane geometry
-  const geometry = new THREE.PlaneGeometry( 32, 16 );
+  const geometry = new THREE.PlaneGeometry(32, 16);
   // Apply image texture to plane geometry
-  const plane = new THREE.Mesh( geometry, material );
+  const plane = new THREE.Mesh(geometry, material);
   // Position plane geometry
-  plane.position.set(0 , 15 , -15);
+  plane.position.set(0, 15, -15);
   // Place plane geometry
-  scene.add( plane );
+  scene.add(plane);
 
   // Second Image (Text with image and white background)
   // Load image as texture
-  const texture2 = new THREE.TextureLoader().load( '../../assets/bouy.jpg' );
+  const texture2 = new THREE.TextureLoader().load('../../assets/bouy.jpg');
   // immediately use the texture for material creation
-  const material2 = new THREE.MeshBasicMaterial( { map: texture2, side: THREE.DoubleSide } );
+  const material2 = new THREE.MeshBasicMaterial({
+    map: texture2,
+    side: THREE.DoubleSide
+  });
   // Create plane geometry
-  const geometry2 = new THREE.PlaneGeometry( 200, 100 );
+  const geometry2 = new THREE.PlaneGeometry(200, 100);
   // Apply image texture to plane geometry
-  const plane2 = new THREE.Mesh( geometry2, material2 );
+  const plane2 = new THREE.Mesh(geometry2, material2);
   // Position plane geometry
-  plane2.position.set(0 , 100 , -200);
+  plane2.position.set(0, 100, -200);
   // Place plane geometry
-  scene.add( plane2 );
+  scene.add(plane2);
 
   const loader3 = new FontLoader();
-         loader3.load( '../../assets/helvetiker_regular.typeface.json', function ( font ) {
-           // Define font color
-           const color = 0x2E5999;
-           // Define font material
-           const matDark = new THREE.LineBasicMaterial( {
-             color: color,
-             side: THREE.DoubleSide
-           } );
-           // Generate and place left side text
-           const message = "Static Model";
-           const shapes = font.generateShapes( message, .5 );
-           const geometry = new THREE.ShapeGeometry( shapes );
-           geometry.computeBoundingBox();
-           const xMid = - 0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
-           geometry.translate( xMid, 0, 0 );
-           const text = new THREE.Mesh( geometry, matDark );
-           text.position.set(-4, -4 , 0);
-           scene.add( text );
+  loader3.load('../../assets/helvetiker_regular.typeface.json', function(font) {
+    // Define font color
+    const color = 0x2E5999;
+    // Define font material
+    const matDark = new THREE.LineBasicMaterial({
+      color: color,
+      side: THREE.DoubleSide
+    });
+    // Generate and place left side text
+    const message = "Static Model";
+    const shapes = font.generateShapes(message, .5);
+    const geometry = new THREE.ShapeGeometry(shapes);
+    geometry.computeBoundingBox();
+    const xMid = -0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
+    geometry.translate(xMid, 0, 0);
+    const text = new THREE.Mesh(geometry, matDark);
+    text.position.set(-4, -4, 0);
+    scene.add(text);
 
-           // Generate and place right side text
-           const message2 = "Preanimated Model";
-           const shapes2 = font.generateShapes( message2, .5 );
-           const geometry2 = new THREE.ShapeGeometry( shapes2 );
-           geometry2.computeBoundingBox();
-           const xMid2 = - 0.5 * ( geometry2.boundingBox.max.x - geometry2.boundingBox.min.x );
-           geometry2.translate( xMid2, 0, 0 );
-           const text2 = new THREE.Mesh( geometry2, matDark );
-           text2.position.set(4, -4 , 0);
-           scene.add( text2 );
-         });
-       
-
-
-  // Define Rendered and html document placement
-  renderer = new THREE.WebGLRenderer({
-    antialias: true
+    // Generate and place right side text
+    const message2 = "Preanimated Model";
+    const shapes2 = font.generateShapes(message2, .5);
+    const geometry2 = new THREE.ShapeGeometry(shapes2);
+    geometry2.computeBoundingBox();
+    const xMid2 = -0.5 * (geometry2.boundingBox.max.x - geometry2.boundingBox.min.x);
+    geometry2.translate(xMid2, 0, 0);
+    const text2 = new THREE.Mesh(geometry2, matDark);
+    text2.position.set(4, -4, 0);
+    scene.add(text2);
   });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
 
-  // Listen for window resizing
-  window.addEventListener("resize", onWindowResize);
-}
+  // GLtf MODEL
+  var mesh;
+  // Load GLTF model, add material, and add it to the scene
+  const loader2 = new GLTFLoader().load(
+    // "../../assets/ship222.glb", // comment this line out and un comment the line below to swithc models
+    "../../assets/FISHWEB.glb",
+    function(gltf) {
+      // Scan loaded model for mesh and apply defined material if mesh is present
+      gltf.scene.traverse(function(child) {
+        if (child.isMesh) {
+          //child.material = newMaterial;
+        }
+      });
+      // set position and scale
+      mesh = gltf.scene;
+      mesh = gltf.scene;
+      mesh.position.set(.8, 0.8, 5);
+      mesh.rotation.set(0, 0, 0);
+      mesh.scale.set(1, 1, 1);
 
-// Window resizing function
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+      // <-- change this to (1, 1, 1) for photogrammetery model
+      // Add model to scene
+      scene.add(mesh);
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
 
-// Animation function
-function animate() {
-  requestAnimationFrame(animate);
-
-  const time = performance.now();
-
-  // Check for controls being activated (locked) and animate scene according to controls
-  if (controls.isLocked === true) {
-    raycaster.ray.origin.copy(controls.getObject().position);
-    raycaster.ray.origin.y -= 10;
-
-    const intersections = raycaster.intersectObjects(objects, false);
-
-    const onObject = intersections.length > 0;
-
-    const delta = (time - prevTime) / 1000;
-
-    velocity.x -= velocity.x * 10.0 * delta;
-    velocity.z -= velocity.z * 10.0 * delta;
-
-    velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
-
-    direction.z = Number(moveForward) - Number(moveBackward);
-    direction.x = Number(moveRight) - Number(moveLeft);
-    direction.normalize(); // this ensures consistent movements in all directions
-
-    if (moveForward || moveBackward) velocity.z -= direction.z * 400.0 * delta;
-    if (moveLeft || moveRight) velocity.x -= direction.x * 400.0 * delta;
-
-    if (onObject === true) {
-      velocity.y = Math.max(0, velocity.y);
-      canJump = true;
     }
 
-    controls.moveRight(-velocity.x * delta);
-    controls.moveForward(-velocity.z * delta);
+    );
 
-    controls.getObject().position.y += velocity.y * delta; // new behavior
 
-    if (controls.getObject().position.y < 10) {
-      velocity.y = 0;
-      controls.getObject().position.y = 10;
+    const loader = new THREE.ImageLoader();
 
-      canJump = true;
-    }
+
+    loader.load(
+      // resource URL
+      '../../assets/fig05.jpg',
+
+      // onLoad callback
+      function(image) {
+        // use the image, e.g. draw part of it on a canvas
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        context.drawImage(image, 100, 100);
+      },
+
+      // onProgress callback currently not supported
+      undefined,
+
+      // onError callback
+      function() {
+        console.error('An error happened.');
+      }
+    );
+
+
+
+    // Define Rendered and html document placement
+    renderer = new THREE.WebGLRenderer({
+      antialias: true
+    }); renderer.setPixelRatio(window.devicePixelRatio); renderer.setSize(window.innerWidth, window.innerHeight); document.body.appendChild(renderer.domElement);
+
+    // Listen for window resizing
+    window.addEventListener("resize", onWindowResize);
   }
 
-  prevTime = time;
+  // Window resizing function
+  function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
 
-  renderer.render(scene, camera);
-}
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  // Animation function
+  function animate() {
+    requestAnimationFrame(animate);
+
+    const time = performance.now();
+
+    // Check for controls being activated (locked) and animate scene according to controls
+    if (controls.isLocked === true) {
+      raycaster.ray.origin.copy(controls.getObject().position);
+      raycaster.ray.origin.y -= 10;
+
+      const intersections = raycaster.intersectObjects(objects, false);
+
+      const onObject = intersections.length > 0;
+
+      const delta = (time - prevTime) / 1000;
+
+      velocity.x -= velocity.x * 10.0 * delta;
+      velocity.z -= velocity.z * 10.0 * delta;
+
+      velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+
+      direction.z = Number(moveForward) - Number(moveBackward);
+      direction.x = Number(moveRight) - Number(moveLeft);
+      direction.normalize(); // this ensures consistent movements in all directions
+
+      if (moveForward || moveBackward) velocity.z -= direction.z * 400.0 * delta;
+      if (moveLeft || moveRight) velocity.x -= direction.x * 400.0 * delta;
+
+      if (onObject === true) {
+        velocity.y = Math.max(0, velocity.y);
+        canJump = true;
+      }
+
+      controls.moveRight(-velocity.x * delta);
+      controls.moveForward(-velocity.z * delta);
+
+      controls.getObject().position.y += velocity.y * delta; // new behavior
+
+      if (controls.getObject().position.y < 10) {
+        velocity.y = 0;
+        controls.getObject().position.y = 10;
+
+        canJump = true;
+      }
+    }
+
+    prevTime = time;
+
+    renderer.render(scene, camera);
+  }
+
+  function render() {
+
+      const time = performance.now() * 0.001;
+
+      mesh.position.y = Math.sin( time ) * 20 + 5;
+      mesh.rotation.x = time * 0.5;
+      mesh.rotation.z = time * 0.51;
+
+      water.material.uniforms[ 'time' ].value += 1.0 / 60.0;
+
+      renderer.render( scene, camera );
+
+    }
