@@ -219,7 +219,7 @@ function init() {
 
   // Second Image (Text with image and white background)
   // Load image as texture
-  const texture2 = new THREE.TextureLoader().load('/assets/colorfulidiom.jpg');
+  const texture2 = new THREE.TextureLoader().load('../../assets/colorfulidiom.jpg');
 
   // immediately use the texture for material creation
   const material2 = new THREE.MeshBasicMaterial({
@@ -236,7 +236,7 @@ function init() {
   scene.add(plane2);
 
   const loader4 = new FontLoader();
-  loader4.load('/assets/helvetiker_regular.typeface.json', function(font) {
+  loader4.load('../../assets/helvetiker_regular.typeface.json', function(font) {
     // Define font color
     const color = 0x2E5999;
     // Define font material
@@ -274,7 +274,7 @@ function init() {
   // Load GLTF model, add material, and add it to the scene
   const loader = new GLTFLoader().load(
     // "../../assets/ship222.glb", // comment this line out and un comment the line below to swithc models
-    "/assets/BIRDLINED.glb",
+    "../../assets/BIRDLINED.glb",
     function(gltf) {
       // Scan loaded model for mesh and apply defined material if mesh is present
       gltf.scene.traverse(function(child) {
@@ -300,7 +300,7 @@ function init() {
 
     const loader2 = new GLTFLoader().load(
       // "../../assets/ship222.glb", // comment this line out and un comment the line below to swithc models
-      "/assets/FISHWEB.glb",
+      "../../assets/FISHWEB.glb",
       function(gltf) {
         // Scan loaded model for mesh and apply defined material if mesh is present
         gltf.scene.traverse(function(child) {
@@ -326,7 +326,7 @@ function init() {
 
       const loader3 = new GLTFLoader().load(
         // "../../assets/ship222.glb", // comment this line out and un comment the line below to swithc models
-        "/assets/thearrowglb.glb",
+        "../../assets/thearrowglb.glb",
         function(gltf) {
           // Scan loaded model for mesh and apply defined material if mesh is present
           gltf.scene.traverse(function(child) {
