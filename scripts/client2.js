@@ -15,10 +15,8 @@ import {
 } from "../src/GLTFLoader.js";
 
 import {  FontLoader } from "../src/FontLoader.js"
-
-import {
-  Water
-} from "../src/Water.js";
+//
+// import {  Water2 } from "../src/Water2.js";
 
 
 
@@ -27,12 +25,14 @@ let camera, scene, renderer, controls, material;
 
 const objects = [];
 let raycaster;
+// let water2;
 
 let moveForward = false;
 let moveBackward = false;
 let moveLeft = false;
 let moveRight = false;
 let canJump = false;
+
 
 let prevTime = performance.now();
 const velocity = new THREE.Vector3();
@@ -57,11 +57,11 @@ function init() {
 
   // Define basic scene parameters
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x000000);
-  scene.fog = new THREE.Fog(0xffffff, 0, 750);
+  scene.background = new THREE.Color(0xFFFFFF);
+  scene.fog = new THREE.Fog(0xffffff, 100, 750);
 
   // Define scene lighting
-  const light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
+  const light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
   light.position.set(0.5, 1, 0.75);
   scene.add(light);
 
@@ -154,94 +154,73 @@ function init() {
     0,
     10
   );
-  //
-  // // Generate the ground
-  // let floorGeometry = new THREE.PlaneGeometry(2000, 2000, 100, 100);
-  // floorGeometry.rotateX(-Math.PI / 2);
-  //
-  // // Vertex displacement pattern for ground
-  // let position = floorGeometry.attributes.position;
-  //
-  // for (let i = 0, l = position.count; i < l; i++) {
-  //   vertex.fromBufferAttribute(position, i);
-  //
-  //   vertex.x += Math.random() * 20 - 10;
-  //   vertex.y += Math.random() * 2;
-  //   vertex.z += Math.random() * 20 - 10;
-  //
-  //   position.setXYZ(i, vertex.x, vertex.y, vertex.z);
-  // }
-  //
-  // floorGeometry = floorGeometry.toNonIndexed(); // ensure each face has unique vertices
-  //
-  // position = floorGeometry.attributes.position;
-  // const colorsFloor = [];
-  //
-  // for (let i = 0, l = position.count; i < l; i++) {
-  //   color.setHSL(Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75);
-  //   colorsFloor.push(color.r, color.g, color.b);
-  // }
-  //
-  // floorGeometry.setAttribute(
-  //   "color",
-  //   new THREE.Float32BufferAttribute(colorsFloor, 3)
-  // );
-  //
-  // const floorMaterial = new THREE.MeshBasicMaterial({
-  //   vertexColors: true
-  // });
-  //
-  // const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-  //
-  // // Insert completed floor into the scene
-  // scene.add(floor);
 
-  const waterGeometry = new THREE.PlaneGeometry( 10000, 10000 );
+  // Generate the ground
+  let floorGeometry = new THREE.PlaneGeometry(30, 500, 1, 5);
+  floorGeometry.rotateX(-Math.PI / 2);
 
-  				water = new Water(
-  					waterGeometry,
-  					{
-  						textureWidth: 512,
-  						textureHeight: 512,
-  						waterNormals: new THREE.TextureLoader().load( 'textures/waternormals.jpg', function ( texture ) {
+  // Vertex displacement pattern for ground
+  let position = floorGeometry.attributes.position;
 
-  							texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  for (let i = 0, l = position.count; i < l; i++) {
+    vertex.fromBufferAttribute(position, i);
 
-  						} ),
-  						sunDirection: new THREE.Vector3(),
-  						sunColor: 0xffffff,
-  						waterColor: 0x001e0f,
-  						distortionScale: 3.7,
-  						fog: scene.fog !== undefined
-  					}
-  				);
+    vertex.x += Math.random() * 20 - 10;
+    vertex.y += Math.random() * 2;
+    vertex.z += Math.random() * 20 - 10;
 
-  				water.rotation.x = - Math.PI / 2;
+    position.setXYZ(i, vertex.x, vertex.y, vertex.z);
+  }
 
-  				scene.add( water );
+  floorGeometry = floorGeometry.toNonIndexed(); // ensure each face has unique vertices
+
+  position = floorGeometry.attributes.position;
+  const colorsFloor = [];
+
+  for (let i = 0, l = position.count; i < l; i++) {
+    color.setHSL(Math.random() * 0.9 + 0.1, 0.95, Math.random() * 0.25 + 0.75);
+    colorsFloor.push(color.r, color.g, color.b);
+  }
+
+  floorGeometry.setAttribute(
+    "color",
+    new THREE.Float32BufferAttribute(colorsFloor, 3)
+  );
+
+  const floorMaterial = new THREE.MeshBasicMaterial({
+    vertexColors: true
+  });
+
+  const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+
+  // Insert completed floor into the scene
+  scene.add(floor);
+
+
 
 
 
   // First Image (red and purple glitch map)
   // Load image as texture
-  const texture = new THREE.TextureLoader().load('../../assets/glitch_map.jpg');
-  // Immediately use the texture for material creation
-  const material = new THREE.MeshBasicMaterial({
-    map: texture,
-    side: THREE.DoubleSide
-  });
+  // const texture = new THREE.TextureLoader().load('../../assets/glitch_map.jpg');
+  // // Immediately use the texture for material creation
+  // const material = new THREE.MeshBasicMaterial({
+  //   map: texture,
+  //   side: THREE.DoubleSide
+  // });
   // Create plane geometry
-  const geometry = new THREE.PlaneGeometry(32, 16);
-  // Apply image texture to plane geometry
-  const plane = new THREE.Mesh(geometry, material);
-  // Position plane geometry
-  plane.position.set(0, 15, -15);
-  // Place plane geometry
-  scene.add(plane);
+  // const geometry = new THREE.PlaneGeometry(32, 16);
+  // // Apply image texture to plane geometry
+  // const plane = new THREE.Mesh(geometry, material);
+  // // Position plane geometry
+  // plane.position.set(0, 15, -15);
+  // // Place plane geometry
+  // scene.add(plane);
 
   // Second Image (Text with image and white background)
   // Load image as texture
-  const texture2 = new THREE.TextureLoader().load('../../assets/bouy.jpg');
+  const texture2 = new THREE.TextureLoader().load('../../assets/colorfulidiom.jpg');
+
   // immediately use the texture for material creation
   const material2 = new THREE.MeshBasicMaterial({
     map: texture2,
@@ -252,12 +231,12 @@ function init() {
   // Apply image texture to plane geometry
   const plane2 = new THREE.Mesh(geometry2, material2);
   // Position plane geometry
-  plane2.position.set(0, 100, -200);
+  plane2.position.set(0, 50, -260);
   // Place plane geometry
   scene.add(plane2);
 
-  const loader3 = new FontLoader();
-  loader3.load('../../assets/helvetiker_regular.typeface.json', function(font) {
+  const loader4 = new FontLoader();
+  loader4.load('../../assets/helvetiker_regular.typeface.json', function(font) {
     // Define font color
     const color = 0x2E5999;
     // Define font material
@@ -290,10 +269,12 @@ function init() {
 
   // GLtf MODEL
   var mesh;
+  var mesh2;
+  var mesh3;
   // Load GLTF model, add material, and add it to the scene
-  const loader2 = new GLTFLoader().load(
+  const loader = new GLTFLoader().load(
     // "../../assets/ship222.glb", // comment this line out and un comment the line below to swithc models
-    "../../assets/FISHWEB.glb",
+    "../../assets/BIRDLINED.glb",
     function(gltf) {
       // Scan loaded model for mesh and apply defined material if mesh is present
       gltf.scene.traverse(function(child) {
@@ -301,12 +282,12 @@ function init() {
           //child.material = newMaterial;
         }
       });
-      // set position and scale
+
       mesh = gltf.scene;
       mesh = gltf.scene;
-      mesh.position.set(.8, 0.8, 5);
+      mesh.position.set(0, -10, -100);
       mesh.rotation.set(0, 0, 0);
-      mesh.scale.set(1, 1, 1);
+      mesh.scale.set(5, 5, 5);
 
       // <-- change this to (1, 1, 1) for photogrammetery model
       // Add model to scene
@@ -317,30 +298,83 @@ function init() {
 
     );
 
+    const loader2 = new GLTFLoader().load(
+      // "../../assets/ship222.glb", // comment this line out and un comment the line below to swithc models
+      "../../assets/FISHWEB.glb",
+      function(gltf) {
+        // Scan loaded model for mesh and apply defined material if mesh is present
+        gltf.scene.traverse(function(child) {
+          if (child.isMesh) {
+            //child.material = newMaterial;
+          }
+        });
 
-    const loader = new THREE.ImageLoader();
+        mesh2 = gltf.scene;
+        mesh2 = gltf.scene;
+        mesh2.position.set(0, 5, -130);
+        mesh2.rotation.set(0, 45, 0);
+        mesh2.scale.set(5, 5, 5);
+
+        // <-- change this to (1, 1, 1) for photogrammetery model
+        // Add model to scene
+        scene.add(mesh2);
 
 
-    loader.load(
-      // resource URL
-      '../../assets/fig05.jpg',
-
-      // onLoad callback
-      function(image) {
-        // use the image, e.g. draw part of it on a canvas
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        context.drawImage(image, 100, 100);
-      },
-
-      // onProgress callback currently not supported
-      undefined,
-
-      // onError callback
-      function() {
-        console.error('An error happened.');
       }
-    );
+
+      );
+
+      const loader3 = new GLTFLoader().load(
+        // "../../assets/ship222.glb", // comment this line out and un comment the line below to swithc models
+        "../../assets/thearrowglb.glb",
+        function(gltf) {
+          // Scan loaded model for mesh and apply defined material if mesh is present
+          gltf.scene.traverse(function(child) {
+            if (child.isMesh) {
+              //child.material = newMaterial;
+            }
+          });
+
+          mesh3 = gltf.scene;
+          mesh3 = gltf.scene;
+          mesh3.position.set(-20, 35, -20);
+          mesh3.rotation.set(-5, 0, 0);
+          mesh3.scale.set(5, 5, 5);
+
+          // <-- change this to (1, 1, 1) for photogrammetery model
+          // Add model to scene
+          scene.add(mesh3);
+
+
+        }
+
+        );
+
+
+    //
+    // const loader = new THREE.ImageLoader();
+    //
+    //
+    // loader.load(
+    //   // resource URL
+    //   '../../assets/fig05.jpg',
+    //
+    //   // onLoad callback
+    //   function(image) {
+    //     // use the image, e.g. draw part of it on a canvas
+    //     const canvas = document.createElement('canvas');
+    //     const context = canvas.getContext('2d');
+    //     context.drawImage(image, 100, 100);
+    //   },
+    //
+    //   // onProgress callback currently not supported
+    //   undefined,
+    //
+    //   // onError callback
+    //   function() {
+    //     console.error('An error happened.');
+    //   }
+    // );
 
 
 
